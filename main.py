@@ -15,8 +15,8 @@ seaborn.set(style='ticks')
 
 ##Load init. data
 nlp = spacy.load("en_core_web_sm")
-Dtweets = pd.read_pickle('cleaned-county-tweets')
-countyPolarity = pd.read_pickle('county-polarity-scores')
+Dtweets = pd.read_pickle('data sources!/cleaned-county-tweets')
+countyPolarity = pd.read_pickle('data sources!/county-polarity-scores')
 tweetsGDF = geopandas.GeoDataFrame(
     Dtweets, geometry=geopandas.points_from_xy(Dtweets.long, Dtweets.lat))
 
