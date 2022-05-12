@@ -23,10 +23,6 @@ tweetsGDF = geopandas.GeoDataFrame(
 
 
 
-##Int. Parallel processing
-from pandarallel import pandarallel
-pandarallel.initialize(progress_bar=True)
-
 ##Defs. for cleaning
 spacy_stopwords = spacy.lang.en.stop_words.STOP_WORDS
 pattern = r'[' + string.punctuation + ']'
@@ -70,36 +66,8 @@ def pandas_entropy(column, base=None):
     base = e if base is None else base
     return -(vc * np.log(vc) / np.log(base)).sum()
 
+#Treatment of Text
 
-countylist = Dtweets.NAME.unique()
-
-polarity = []
-polarRange = []
-countUnique = []
-entropyList = []
-
-Dtweets['pidentity'] = Dtweets['polarity'].astype(float).round(1)
-
-
-for county in countylist:
-    range  = Dtweets.loc[Dtweets['NAME'] == county, 'polarity'].quantile(0.99) - Dtweets.loc[Dtweets['NAME'] == county, 'polarity'].quantile(0.01)
-    polarRange.append(range)
-
-for county in countylist:
-    unique = Dtweets.loc[Dtweets['NAME'] == county, 'user_id'].unique()
-    count = len(unique)
-    countUnique.append(count)
-
-for county in countylist:
-    entropy = pandas_entropy(Dtweets.loc[Dtweets['NAME'] == county, 'pidentity'])
-    entropyList.append(entropy)
-
-
-#for county in countylist:
-    #score = Dtweets.loc[Dtweets['NAME'] == county, 'polarity'].sum() / len(Dtweets.loc[Dtweets['NAME'] == county, 'polarity'])
-    #polarity.append(score)
-
-##Treatment of Text
 ##Dtweets['cleaned'] = Dtweets['tweet'].parallel_apply(lambda x : remove_usernames_links(x))
 #Dtweets['subjectivity'] = Dtweets['cleaned'].apply(lambda x: subjectivity(x))
 #Dtweets['subjects'] = Dtweets['cleaned'].apply(lambda x : subject(x))
@@ -108,19 +76,42 @@ for county in countylist:
 
 
 
-##columnMOVE = Dtweets.pop("topSubj")
-##Dtweets.insert(0, "topSubj", columnMOVE)
+countylist = Dtweets.NAME.unique()
 
-##counties = pd.DataFrame(list(zip(countylist, polarity)),
-               ##columns =['Name', 'polarity'])
+polarity = []
+polarRange = []
+countUnique = []
+entropyList = []
+
+#Buckets political sentiments to make entropy analyses more meaningful
+Dtweets['pidentity'] = Dtweets['polarity'].astype(float).round(1)
+#Calculates initial polarity
+#for county in countylist:
+    #score = Dtweets.loc[Dtweets['NAME'] == county, 'polarity'].sum() / len(Dtweets.loc[Dtweets['NAME'] == county, 'polarity'])
+    #polarity.append(score)
+
+##Finds Ranges in polarity
+for county in countylist:
+    range  = Dtweets.loc[Dtweets['NAME'] == county, 'polarity'].quantile(0.99) - Dtweets.loc[Dtweets['NAME'] == county, 'polarity'].quantile(0.01)
+    polarRange.append(range)
+
+##Finds unique users
+for county in countylist:
+    unique = Dtweets.loc[Dtweets['NAME'] == county, 'user_id'].unique()
+    count = len(unique)
+    countUnique.append(count)
+
+##Finds political entropy
+for county in countylist:
+    entropy = pandas_entropy(Dtweets.loc[Dtweets['NAME'] == county, 'pidentity'])
+    entropyList.append(entropy)
 
 
-# Printing stuff?
+# Printing stuff
 cols = list(Dtweets.columns.values)
 countyPolarity['range'] = list(polarRange)
 countyPolarity['uniqueUsers'] = list(countUnique)
 countyPolarity['entropy'] = list(entropyList)
 countyPolarity = countyPolarity.round(3)
 countyPolarity.sort_values('polarity', ascending = False, inplace = True)
-
 print(countyPolarity)
