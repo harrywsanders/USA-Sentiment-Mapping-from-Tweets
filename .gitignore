@@ -2,8 +2,6 @@
 data sources!/USACOUNTIES.geojson
 .DS_Store
 
-data sources\!/bidentweets.csv
-*.csv
 data sources\!/cleaned-county-tweets
 data sources\!/county-polarity-scores
 data sources\!/states.json
