@@ -11,6 +11,11 @@ The aim of this project is to scrape political Tweets – those referencing #joe
 gather a political sentiment using the mean score and the mean confidence of that UserID, and map county-level political entropy. It's currently in its early stages–
 the visualization above was a preliminary analysis. 
 
+### To use this script, you need a data table with:
+* Tweets, referring to some political issue. 
+* The lat and longitude of the tweet location – it's helpful if you also have the country and continent of origin (as I did with the dataset I wrote this for), but it's not at all necessary and could be added in a couple of quick lines. 
+* A fun loving spirit :)
+
 ### In the future, we aim to:
 * Rank counties by political entropy, and predict election variance by this measure.
 * Establish a measurement of political entropy over time– especially how it relates to the rise of Trump-era partisainship.
