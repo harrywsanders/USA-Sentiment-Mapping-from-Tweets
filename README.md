@@ -1,7 +1,7 @@
 # Mapping Politics through Twitter
 
 <p align="center">
-  <img width="530" height="250" src="https://user-images.githubusercontent.com/84194186/167974410-b5920f26-d60a-4fb8-b952-2a6932b410e5.png">
+  <img src="https://user-images.githubusercontent.com/84194186/167974410-b5920f26-d60a-4fb8-b952-2a6932b410e5.png">
 </p>
 <p align="center"><em>A Map of 65,000 Tweets, with political polarity scores.</em></p>
 
