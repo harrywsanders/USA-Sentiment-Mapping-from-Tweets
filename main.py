@@ -11,6 +11,7 @@ tweets = clean(tweets)
 from nlp_apply import *
 tweets = nlp_apply(tweets)
 
+##Reverse Geocoding stage.
 from reverse_geocoding import *
 tweets = reverse_geo(tweets)
 
